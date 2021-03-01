@@ -23,7 +23,7 @@ Tech Stack used to build this app :
 
 _Request Header_
 
-```
+```json
 {
   "Content-Type": "application/json"
 }
@@ -31,7 +31,7 @@ _Request Header_
 
 _Request Body_
 
-```
+```json
 {
   "title": "<todo title>",
   "description": "<todo description>",
@@ -42,21 +42,21 @@ _Request Body_
 
 _Response (201)_
 
-```
+```json
 {
-  "id": <given id by system>,
+  "id": "<given id by system>",
   "title": "<todo title>",
   "description": "<todo description>",
   "status": "<todo status>",
-  "due_date": "<todo due date>"
+  "due_date": "<todo due date>",
   "createdAt": "2020-03-20T07:15:12.149Z",
-  "updatedAt": "2020-03-20T07:15:12.149Z",
+  "updatedAt": "2020-03-20T07:15:12.149Z"
 }
 ```
 
 _Response (400)_
 
-```
+```json
 {
   "message": "Bad Request: <validation error message>"
 }
@@ -64,7 +64,7 @@ _Response (400)_
 
 _Response (500)_
 
-```
+```json
 {
   "message": "Internal Server Error"
 }
@@ -78,7 +78,7 @@ _Response (500)_
 
 _Request Header_
 
-```
+```json
 {
   "Content-Type": "application/json"
 }
@@ -92,32 +92,32 @@ not needed
 
 _Response (200)_
 
-```
+```json
 [
   {
     "id": 1,
     "title": "<todo title>",
     "description": "<todo description>",
     "status": "<todo status>",
-    "due_date": "<todo due date>"
+    "due_date": "<todo due date>",
     "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
+    "updatedAt": "2020-03-20T07:15:12.149Z"
   },
   {
     "id": 2,
     "title": "<todo title>",
     "description": "<todo description>",
     "status": "<todo status>",
-    "due_date": "<todo due date>"
+    "due_date": "<todo due date>",
     "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
+    "updatedAt": "2020-03-20T07:15:12.149Z"
   }
 ]
 ```
 
 _Response (500)_
 
-```
+```json
 {
   "message": "Internal Server Error"
 }
@@ -131,7 +131,7 @@ _Response (500)_
 
 _Request Header_
 
-```
+```json
 {
   "Content-Type": "application/json"
 }
@@ -145,23 +145,31 @@ not needed
 
 _Response (200)_
 
-```
+```json
 {
   "id": 1,
   "title": "<todo title>",
   "description": "<todo description>",
   "status": "<todo status>",
-  "due_date": "<todo due date>"
+  "due_date": "<todo due date>",
   "createdAt": "2020-03-20T07:15:12.149Z",
-  "updatedAt": "2020-03-20T07:15:12.149Z",
+  "updatedAt": "2020-03-20T07:15:12.149Z"
 }
 ```
 
 _Response (404)_
 
-```
+```json
 {
   "message": "Data Not Found"
+}
+```
+
+_Response (500)_
+
+```json
+{
+  "message": "Internal Server Error"
 }
 ```
 
@@ -173,7 +181,7 @@ _Response (404)_
 
 _Request Header_
 
-```
+```json
 {
   "Content-Type": "application/json"
 }
@@ -181,7 +189,7 @@ _Request Header_
 
 _Request Body_
 
-```
+```json
 {
   "title": "<todo title>",
   "description": "<todo description>",
@@ -192,21 +200,21 @@ _Request Body_
 
 _Response (200)_
 
-```
+```json
 {
-  "id": <given id by system>,
+  "id": "<given id by system>",
   "title": "<todo title>",
   "description": "<todo description>",
   "status": "<todo status>",
-  "due_date": "<todo due date>"
+  "due_date": "<todo due date>",
   "createdAt": "2020-03-20T07:15:12.149Z",
-  "updatedAt": "2020-03-20T07:15:12.149Z",
+  "updatedAt": "2020-03-20T07:15:12.149Z"
 }
 ```
 
 _Response (400)_
 
-```
+```json
 {
   "message": "Bad Request: <validation error message>"
 }
@@ -214,7 +222,7 @@ _Response (400)_
 
 _Response (404)_
 
-```
+```json
 {
   "message": "Data Not Found"
 }
@@ -222,7 +230,7 @@ _Response (404)_
 
 _Response (500)_
 
-```
+```json
 {
   "message": "Internal Server Error"
 }
@@ -236,7 +244,7 @@ _Response (500)_
 
 _Request Header_
 
-```
+```json
 {
   "Content-Type": "application/json"
 }
@@ -244,7 +252,7 @@ _Request Header_
 
 _Request Body_
 
-```
+```json
 {
   "status": "<todo status>"
 }
@@ -252,21 +260,21 @@ _Request Body_
 
 _Response (200)_
 
-```
+```json
 {
-  "id": <given id by system>,
+  "id": "<given id by system>",
   "title": "<todo title>",
   "description": "<todo description>",
   "status": "<todo status>",
-  "due_date": "<todo due date>"
+  "due_date": "<todo due date>",
   "createdAt": "2020-03-20T07:15:12.149Z",
-  "updatedAt": "2020-03-20T07:15:12.149Z",
+  "updatedAt": "2020-03-20T07:15:12.149Z"
 }
 ```
 
 _Response (400)_
 
-```
+```json
 {
   "message": "Bad Request: <validation error message>"
 }
@@ -274,7 +282,7 @@ _Response (400)_
 
 _Response (404)_
 
-```
+```json
 {
   "message": "Data Not Found"
 }
@@ -282,7 +290,7 @@ _Response (404)_
 
 _Response (500)_
 
-```
+```json
 {
   "message": "Internal Server Error"
 }
@@ -290,13 +298,13 @@ _Response (500)_
 
 ---
 
-### Delete /todos/:id
+### DELETE /todos/:id
 
 > Delete single todo based on id provided
 
 _Request Header_
 
-```
+```json
 {
   "Content-Type": "application/json"
 }
@@ -310,7 +318,7 @@ not needed
 
 _Response (200)_
 
-```
+```json
 {
   "message": "todo success to delete"
 }
@@ -318,7 +326,7 @@ _Response (200)_
 
 _Response (404)_
 
-```
+```json
 {
   "message": "Data Not Found"
 }
@@ -326,7 +334,7 @@ _Response (404)_
 
 _Response (500)_
 
-```
+```json
 {
   "message": "Internal Server Error"
 }
