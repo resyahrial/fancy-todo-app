@@ -15,30 +15,6 @@ Tech Stack used to build this app :
 - Express JS framework
 - PostgreSQL
 
-&nbsp;
-
-## Global Responses
-
-> These responses are applied globally on all endpoints
-
-_Response (400 - Bad Request)_
-
-```
-{
-  "message": "<your message for 400>"
-}
-```
-
-_Response (401 - Unauthorized)_
-
-```
-{
-  "message": "<your message for 401>"
-}
-```
-
-&nbsp;
-
 ## RESTful endpoints
 
 ### POST /todos
