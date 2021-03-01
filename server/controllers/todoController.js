@@ -13,7 +13,7 @@ class Controller {
     } catch (err) {
       const errorMessage = {
         status: 500,
-        msg: "Internal Server Error",
+        message: "Internal Server Error",
       };
 
       let message = "";
@@ -27,11 +27,47 @@ class Controller {
 
       if (message !== "") {
         errorMessage.status = 400;
-        errorMessage.msg = `Bad Request: ${message}`;
+        errorMessage.message = `Bad Request: ${message}`;
       }
 
       res.status(errorMessage.status).json({
-        message: errorMessage.msg,
+        message: errorMessage.message,
+      });
+    }
+  }
+
+  static async findAll(req, res) {
+    try {
+      const todos = await Todo.findAll();
+      res.status(200).json(todos);
+    } catch (err) {
+      res.status(500).jsno({
+        message: "Internal Server Error",
+      });
+    }
+  }
+
+  static async findById(req, res) {
+    try {
+      const id = req.params.id;
+      const todo = await Todo.findByPk(id);
+      if (todo === null) {
+        throw new Error("Data Not Found");
+      }
+      res.status(200).json(todo);
+    } catch (err) {
+      const errorMessage = {
+        status: 500,
+        message: "Internal Server Error",
+      };
+
+      if (err.message) {
+        errorMessage.status = 404;
+        errorMessage.message = err.message;
+      }
+
+      res.status(errorMessage.status).json({
+        message: errorMessage.message,
       });
     }
   }
