@@ -9,7 +9,6 @@ module.exports = (err, req, res, next) => {
     message: "Internal Server Error",
   };
 
-  // sequelize error
   if (data.name) {
     switch (data.name) {
       case "SequelizeDatabaseError":
@@ -34,6 +33,14 @@ module.exports = (err, req, res, next) => {
         };
         break;
       case "Invalid username / password":
+        errMessage = {
+          ...errMessage,
+          status: 401,
+          message: data.name,
+        };
+        break;
+      case "You're not authorize":
+      case "Please Login First":
         errMessage = {
           ...errMessage,
           status: 401,
