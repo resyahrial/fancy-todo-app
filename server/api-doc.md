@@ -317,7 +317,8 @@ _Response (200)_
 
 ```json
 {
-  "token": "<token>"
+  "id": "<given id by system>",
+  "email": "<email>"
 }
 ```
 
@@ -352,11 +353,11 @@ _Response (200)_
 }
 ```
 
-_Response (404)_
+_Response (401)_
 
 ```json
 {
-  "message": "Data Not Found"
+  "message": "Invalid username / password"
 }
 ```
 
