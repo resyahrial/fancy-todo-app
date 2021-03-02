@@ -4,7 +4,13 @@ class Controller {
   static async addTodo(req, res, next) {
     try {
       const { title, description, status, due_date } = req.body;
-      const newTodo = { title, description, status, due_date };
+      const newTodo = {
+        title,
+        description,
+        status,
+        due_date,
+        UserId: req.currUser.id,
+      };
       const todo = await Todo.create(newTodo);
 
       res.status(201).json({
@@ -19,7 +25,11 @@ class Controller {
 
   static async findAll(req, res, next) {
     try {
-      const todos = await Todo.findAll();
+      const todos = await Todo.findAll({
+        where: {
+          UserId: req.currUser.id,
+        },
+      });
       res.status(200).json(todos);
     } catch (err) {
       next({
