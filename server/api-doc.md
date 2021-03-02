@@ -39,6 +39,36 @@ _Response (400)_
 
 ## RESTful endpoints
 
+### GET /
+
+> Home page, get random quote from 3rd api
+
+_Request Header_
+
+```json
+{
+  "Content-Type": "application/json"
+}
+```
+
+_Request Body_
+
+```
+not needed
+```
+
+_Response (200)_
+
+```json
+{
+  "text": "<quote>",
+  "author": "<quote author>",
+  "tag": "<quote tag>"
+}
+```
+
+---
+
 ### POST /todos
 
 > Create todo list
@@ -47,7 +77,7 @@ _Request Header_
 
 ```json
 {
-  "Content-Type": "application/json"
+  "access_token": "<token>"
 }
 ```
 
@@ -86,7 +116,7 @@ _Request Header_
 
 ```json
 {
-  "Content-Type": "application/json"
+  "access_token": "<token>"
 }
 ```
 
@@ -131,7 +161,7 @@ _Request Header_
 
 ```json
 {
-  "Content-Type": "application/json"
+  "access_token": "<token>"
 }
 ```
 
@@ -173,7 +203,7 @@ _Request Header_
 
 ```json
 {
-  "Content-Type": "application/json"
+  "access_token": "<token>"
 }
 ```
 
@@ -220,7 +250,7 @@ _Request Header_
 
 ```json
 {
-  "Content-Type": "application/json"
+  "access_token": "<token>"
 }
 ```
 
@@ -264,7 +294,7 @@ _Request Header_
 
 ```json
 {
-  "Content-Type": "application/json"
+  "access_token": "<token>"
 }
 ```
 
