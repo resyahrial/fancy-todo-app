@@ -1,7 +1,7 @@
 const { decodedToken } = require("../helpers");
-const { Todo } = require("../models");
+const { Todo, User } = require("../models");
 
-const authentication = (req, res, next) => {
+const authentication = async (req, res, next) => {
   if (!req.headers.access_token) {
     next({
       data: {
@@ -11,11 +11,27 @@ const authentication = (req, res, next) => {
     return;
   }
 
-  const { id, email } = decodedToken(req.headers.access_token);
-  req.currUser = {
-    id,
-    email,
-  };
+  try {
+    const { id, email } = decodedToken(req.headers.access_token);
+    const user = await User.findByPk(id);
+    if (!user) {
+      throw { name: "Invalid Token" };
+    }
+
+    if (user.email !== email) {
+      throw { name: "Invalid Token" };
+    }
+
+    req.currUser = {
+      id,
+      email,
+    };
+  } catch (err) {
+    next({
+      data: err,
+    });
+  }
+
   next();
 };
 

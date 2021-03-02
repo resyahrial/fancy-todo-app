@@ -39,6 +39,7 @@ module.exports = (err, req, res, next) => {
           message: data.name,
         };
         break;
+      case "Invalid Token":
       case "You're not authorize":
       case "Please Login First":
         errMessage = {
