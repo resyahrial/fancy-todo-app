@@ -15,6 +15,28 @@ Tech Stack used to build this app :
 - Express JS framework
 - PostgreSQL
 
+## Global Responses
+
+> These responses are applied globally on all endpoints
+
+_Response (500)_
+
+```json
+{
+  "message": "Internal Server Error"
+}
+```
+
+> These responses are applied globally on all endpoints with request body
+
+_Response (400)_
+
+```json
+{
+  "message": "Bad Request: <validation error message>"
+}
+```
+
 ## RESTful endpoints
 
 ### POST /todos
@@ -51,22 +73,6 @@ _Response (201)_
   "due_date": "<todo due date>",
   "createdAt": "2020-03-20T07:15:12.149Z",
   "updatedAt": "2020-03-20T07:15:12.149Z"
-}
-```
-
-_Response (400)_
-
-```json
-{
-  "message": "Bad Request: <validation error message>"
-}
-```
-
-_Response (500)_
-
-```json
-{
-  "message": "Internal Server Error"
 }
 ```
 
@@ -115,14 +121,6 @@ _Response (200)_
 ]
 ```
 
-_Response (500)_
-
-```json
-{
-  "message": "Internal Server Error"
-}
-```
-
 ---
 
 ### GET /todos/:id
@@ -165,14 +163,6 @@ _Response (404)_
 }
 ```
 
-_Response (500)_
-
-```json
-{
-  "message": "Internal Server Error"
-}
-```
-
 ---
 
 ### PUT /todos/:id
@@ -212,27 +202,11 @@ _Response (200)_
 }
 ```
 
-_Response (400)_
-
-```json
-{
-  "message": "Bad Request: <validation error message>"
-}
-```
-
 _Response (404)_
 
 ```json
 {
   "message": "Data Not Found"
-}
-```
-
-_Response (500)_
-
-```json
-{
-  "message": "Internal Server Error"
 }
 ```
 
@@ -272,27 +246,11 @@ _Response (200)_
 }
 ```
 
-_Response (400)_
-
-```json
-{
-  "message": "Bad Request: <validation error message>"
-}
-```
-
 _Response (404)_
 
 ```json
 {
   "message": "Data Not Found"
-}
-```
-
-_Response (500)_
-
-```json
-{
-  "message": "Internal Server Error"
 }
 ```
 
@@ -332,11 +290,73 @@ _Response (404)_
 }
 ```
 
-_Response (500)_
+---
+
+### POST /register
+
+> Register user
+
+_Request Header_
 
 ```json
 {
-  "message": "Internal Server Error"
+  "Content-Type": "application/json"
+}
+```
+
+_Request Body_
+
+```json
+{
+  "email": "<email>",
+  "password": "<password>"
+}
+```
+
+_Response (200)_
+
+```json
+{
+  "token": "<token>"
+}
+```
+
+---
+
+### POST /login
+
+> Login user
+
+_Request Header_
+
+```json
+{
+  "Content-Type": "application/json"
+}
+```
+
+_Request Body_
+
+```json
+{
+  "email": "<email>",
+  "password": "<password>"
+}
+```
+
+_Response (200)_
+
+```json
+{
+  "token": "<token>"
+}
+```
+
+_Response (404)_
+
+```json
+{
+  "message": "Data Not Found"
 }
 ```
 
