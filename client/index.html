@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="google-signin-client_id"
+      content="204376097051-rd5ci6k66de7vib0shqoicdc8ergrcqu.apps.googleusercontent.com"
+    />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <link rel="stylesheet" href="./style/tailwind.css" />
     <title>Fancy Todo</title>
   </head>
@@ -20,14 +25,20 @@
     </header>
     <!-- alert -->
     <div class="max-w-xl mx-auto" id="alert"></div>
+
+    <!-- content -->
     <div class="py-8" id="content">
       <!-- Login Form -->
       <div
         id="login-form"
         class="max-w-md bg-secondary mx-auto py-8 px-4 rounded-md shadow-md"
       >
-        <h2 class="text-center text-2xl font-bold">Login Form</h2>
-        <div class="w-full divide-solid bg-text my-4" style="height: 2px"></div>
+        <h2 class="text-center text-2xl font-bold mb-4">Login Form</h2>
+
+        <div
+          class="w-full divide-solid bg-gray-200 my-4"
+          style="height: 1px"
+        ></div>
         <form class="space-y-4 w-full" id="form-login">
           <div class="space-y-2">
             <label for="email-login">Email :</label><br />
@@ -49,12 +60,20 @@
               placeholder="type password"
             />
           </div>
-          <button
-            type="submit"
-            class="bg-blue-600 rounded-md py-2 px-5 font-bold hover:bg-blue-800"
-          >
-            Login
-          </button>
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              type="submit"
+              class="bg-blue-600 rounded-md py-2 px-3 h-min font-bold hover:bg-blue-800"
+            >
+              Login
+            </button>
+            <div
+              class="g-signin2 bg-white flex justify-center rounded-md overflow-hidden"
+              data-width="200"
+              data-height="40"
+              data-onsuccess="onSignIn"
+            ></div>
+          </div>
         </form>
       </div>
 
@@ -86,12 +105,20 @@
               placeholder="type password"
             />
           </div>
-          <button
-            type="submit"
-            class="bg-blue-600 rounded-md py-2 px-5 font-bold hover:bg-blue-800"
-          >
-            Register
-          </button>
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              type="submit"
+              class="bg-blue-600 rounded-md py-2 px-3 h-min font-bold hover:bg-blue-800"
+            >
+              Register
+            </button>
+            <div
+              class="g-signin2 bg-white flex justify-center rounded-md overflow-hidden"
+              data-width="200"
+              data-height="40"
+              data-onsuccess="onSignIn"
+            ></div>
+          </div>
         </form>
       </div>
     </div>

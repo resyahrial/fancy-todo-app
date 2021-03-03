@@ -15,6 +15,10 @@ $(document).ready(() => {
         break;
       default:
         localStorage.removeItem("access_token");
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log("User signed out.");
+        });
         home();
         break;
     }
@@ -32,31 +36,6 @@ $(document).ready(() => {
     auth("register");
   });
 });
-
-function clearContent() {
-  $("#content").children().hide();
-  clearAlert();
-}
-
-function alert(type, message) {
-  const classType = {
-    success: "bg-blue-400",
-    failed: "bg-red-400",
-  };
-  const alert = $("#alert");
-  alert.addClass(`my-4 p-4 rounded-md shadow ${classType[type]}`);
-  alert.text(message);
-
-  setTimeout(() => {
-    clearAlert();
-  }, 2000);
-}
-
-function clearAlert() {
-  const alert = $("#alert");
-  alert.removeClass("my-4 p-4 rounded-md shadow bg-red-400 bg-blue-400");
-  alert.empty();
-}
 
 function home() {
   clearContent();
@@ -92,34 +71,6 @@ function quoteData() {
     });
 }
 
-function auth(type) {
-  $.ajax({
-    url: `http://localhost:8080/${type}`,
-    method: "POST",
-    data: {
-      email: $(`#form-${type} div #email-${type}`).val(),
-      password: $(`#form-${type} div #password-${type}`).val(),
-    },
-  })
-    .done((res) => {
-      $(`#form-${type}`)[0].reset();
-      if (type === "register") {
-        home();
-        alert("success", "Regsiter succesfully");
-        return;
-      }
-
-      alert("success", "Login succesfully");
-      localStorage.setItem("access_token", res.accessToken);
-      home();
-      alert("success", "Login succesfully");
-    })
-    .fail((err) => {
-      $(`#form-${type}`)[0].reset();
-      alert("failed", err.responseJSON.message);
-    });
-}
-
 function showTodo() {
   $.ajax({
     url: `http://localhost:8080/todos`,
@@ -141,7 +92,82 @@ function showTodo() {
       );
     })
     .fail((err) => {
+      alert("failed", err.responseJSON.message);
+    });
+}
+
+// auth - regular
+function auth(type) {
+  $.ajax({
+    url: `http://localhost:8080/${type}`,
+    method: "POST",
+    data: {
+      email: $(`#form-${type} div #email-${type}`).val(),
+      password: $(`#form-${type} div #password-${type}`).val(),
+    },
+  })
+    .done((res) => {
+      $(`#form-${type}`)[0].reset();
+      if (type === "register") {
+        home();
+        alert("success", "Regsiter succesfully");
+        return;
+      }
+
+      localStorage.setItem("access_token", res.accessToken);
+      home();
+      alert("success", "Login succesfully");
+    })
+    .fail((err) => {
       $(`#form-${type}`)[0].reset();
       alert("failed", err.responseJSON.message);
     });
+}
+
+// auth - OAuth
+function onSignIn(googleUser) {
+  if (localStorage.access_token) {
+    return;
+  }
+
+  $.ajax({
+    url: `http://localhost:8080/oauth`,
+    method: "POST",
+    data: {
+      token: googleUser.getAuthResponse().id_token,
+    },
+  })
+    .done((res) => {
+      localStorage.setItem("access_token", res.accessToken);
+      home();
+    })
+    .fail((err) => {
+      alert("failed", err.responseJSON.message);
+    });
+}
+
+// helpers
+function clearContent() {
+  $("#content").children().hide();
+  clearAlert();
+}
+
+function alert(type, message) {
+  const classType = {
+    success: "bg-blue-400",
+    failed: "bg-red-400",
+  };
+  const alert = $("#alert");
+  alert.addClass(`my-4 p-4 rounded-md shadow ${classType[type]}`);
+  alert.text(message);
+
+  setTimeout(() => {
+    clearAlert();
+  }, 2000);
+}
+
+function clearAlert() {
+  const alert = $("#alert");
+  alert.removeClass("my-4 p-4 rounded-md shadow bg-red-400 bg-blue-400");
+  alert.empty();
 }
