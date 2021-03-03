@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html class="font-serif" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style/tailwind.css" />
+    <title>Fancy Todo</title>
+  </head>
+  <body class="bg-primary text-primary">
+    <header class="bg-secondary text-secondary">
+      <nav class="flex justify-between items-center px-6 h-11">
+        <h1 class="text-xl text-primary font-bold">Fancy Todo</h1>
+        <ul class="flex justify-between space-x-2">
+          <li><a href="#" class="hover:text-accent">Login</a></li>
+          <li><a href="#" class="hover:text-accent">Register</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="py-8" id="content">
+      <!-- Login Form -->
+      <div
+        id="login-form"
+        class="max-w-md bg-secondary mx-auto py-8 px-4 rounded-md shadow-md"
+      >
+        <h2 class="text-center text-2xl font-bold">Login Form</h2>
+        <div class="w-full divide-solid bg-text my-4" style="height: 2px"></div>
+        <form class="space-y-4 w-full">
+          <div class="space-y-2">
+            <label for="email-login">Email :</label><br />
+            <input
+              type="email"
+              id="email-login"
+              name="email"
+              class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+              placeholder="type email"
+            /><br />
+          </div>
+          <div>
+            <label for="password-login">Password :</label><br />
+            <input
+              type="password"
+              id="password-login"
+              name="password"
+              class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+              placeholder="type password"
+            />
+          </div>
+          <button
+            type="submit"
+            class="bg-blue-600 rounded-md py-2 px-5 font-bold hover:bg-blue-800"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div
+        id="register-form"
+        class="max-w-md bg-secondary mx-auto py-8 px-4 rounded-md shadow-md"
+      >
+        <h2 class="text-center text-2xl font-bold">Register Form</h2>
+        <div class="w-full divide-solid bg-text my-4" style="height: 2px"></div>
+        <form class="space-y-4 w-full">
+          <div class="space-y-2">
+            <label for="email-register">Email :</label><br />
+            <input
+              type="email"
+              id="email-register"
+              name="email"
+              class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+              placeholder="type email"
+            /><br />
+          </div>
+          <div>
+            <label for="password-register">Password :</label><br />
+            <input
+              type="password"
+              id="password-register"
+              name="password"
+              class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+              placeholder="type password"
+            />
+          </div>
+          <button
+            type="submit"
+            class="bg-blue-600 rounded-md py-2 px-5 font-bold hover:bg-blue-800"
+          >
+            Register
+          </button>
+        </form>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./scripts/index.js"></script>
+  </body>
+</html>
