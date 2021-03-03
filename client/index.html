@@ -11,12 +11,15 @@
     <header class="bg-secondary text-secondary">
       <nav class="flex justify-between items-center px-6 h-11">
         <h1 class="text-xl text-primary font-bold">Fancy Todo</h1>
-        <ul class="flex justify-between space-x-2">
+        <ul class="flex justify-between space-x-4">
           <li><a href="#" class="hover:text-accent">Login</a></li>
           <li><a href="#" class="hover:text-accent">Register</a></li>
+          <li><a href="#" class="hover:text-accent logout">Logout</a></li>
         </ul>
       </nav>
     </header>
+    <!-- alert -->
+    <div class="max-w-xl mx-auto" id="alert"></div>
     <div class="py-8" id="content">
       <!-- Login Form -->
       <div
@@ -25,7 +28,7 @@
       >
         <h2 class="text-center text-2xl font-bold">Login Form</h2>
         <div class="w-full divide-solid bg-text my-4" style="height: 2px"></div>
-        <form class="space-y-4 w-full">
+        <form class="space-y-4 w-full" id="form-login">
           <div class="space-y-2">
             <label for="email-login">Email :</label><br />
             <input
@@ -36,7 +39,7 @@
               placeholder="type email"
             /><br />
           </div>
-          <div>
+          <div class="space-y-2">
             <label for="password-login">Password :</label><br />
             <input
               type="password"
@@ -62,7 +65,7 @@
       >
         <h2 class="text-center text-2xl font-bold">Register Form</h2>
         <div class="w-full divide-solid bg-text my-4" style="height: 2px"></div>
-        <form class="space-y-4 w-full">
+        <form class="space-y-4 w-full" id="form-register">
           <div class="space-y-2">
             <label for="email-register">Email :</label><br />
             <input
@@ -73,7 +76,7 @@
               placeholder="type email"
             /><br />
           </div>
-          <div>
+          <div class="space-y-2">
             <label for="password-register">Password :</label><br />
             <input
               type="password"
