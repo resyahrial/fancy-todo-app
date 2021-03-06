@@ -14,6 +14,7 @@ const authentication = async (req, res, next) => {
   try {
     const { id, email } = decodedToken(req.headers.access_token);
     const user = await User.findByPk(id);
+
     if (!user) {
       throw { name: "Invalid Token" };
     }
@@ -23,8 +24,8 @@ const authentication = async (req, res, next) => {
     }
 
     req.currUser = {
-      id,
-      email,
+      id: user.id,
+      email: user.email,
     };
   } catch (err) {
     next({

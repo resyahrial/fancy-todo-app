@@ -3,14 +3,14 @@ const { Todo } = require("../models");
 class Controller {
   static async addTodo(req, res, next) {
     try {
-      const { title, description, status, due_date } = req.body;
+      const { title, description, due_date } = req.body;
       const newTodo = {
         title,
         description,
-        status,
         due_date,
         UserId: req.currUser.id,
       };
+
       const todo = await Todo.create(newTodo);
 
       res.status(201).json({
@@ -29,6 +29,7 @@ class Controller {
         where: {
           UserId: req.currUser.id,
         },
+        order: [["updatedAt", "DESC"]],
       });
       res.status(200).json(todos);
     } catch (err) {

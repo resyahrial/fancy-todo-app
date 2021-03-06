@@ -1,5 +1,10 @@
+const BASE_URL = "http://localhost:8080";
+
 $(document).ready(() => {
   home();
+  $("#add-todos").click(() => {
+    $("#modal").removeClass("-translate-y-full").addClass("translate-y-4");
+  });
 
   // navigation
   $("nav ul li").click(function (e) {
@@ -15,27 +20,40 @@ $(document).ready(() => {
         break;
       default:
         localStorage.removeItem("access_token");
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-          console.log("User signed out.");
-        });
+        const auth2 = gapi.auth2.getAuthInstance();
+        auth2
+          .signOut()
+          .then(() => {
+            console.log("User signed out.");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         home();
         break;
     }
   });
-
-  // login
-  $("#form-login").submit((e) => {
-    e.preventDefault();
-    auth("login");
-  });
-
-  // register
-  $("#form-register").submit((e) => {
-    e.preventDefault();
-    auth("register");
-  });
 });
+
+function showModal(event) {
+  let todo = {};
+  if (Object.keys(event.target.dataset).length !== 0) {
+    todo = event.target.dataset;
+  }
+
+  $("#id").val(todo.id || "");
+  $("#status").val(todo.status || "");
+  $("#title").val(todo.title || "");
+  $("#description").val(todo.description || "");
+  $("#due_date").val(
+    todo.due_date ? dayjs(todo.due_date).format("YYYY-MM-DD") : ""
+  );
+  $("#modal").removeClass("-translate-y-full").addClass("translate-y-4");
+}
+
+function hideModal() {
+  $("#modal").addClass("-translate-y-full").removeClass("translate-y-4");
+}
 
 function home() {
   clearContent();
@@ -65,62 +83,255 @@ function quoteData() {
         </div>
       `);
     })
-    .fail((err) => {
-      console.log(err);
-      alert("failed", "Internal Server Error");
+    .fail(() => {
+      swal({
+        text: "Internal Server Error",
+        icon: "error",
+        timer: 1200,
+        buttons: false,
+      });
     });
 }
 
+// Create or Update
+function saveTodo(event) {
+  event.preventDefault();
+  let textMessage = "Success add todo";
+  let option = {
+    url: `${BASE_URL}/todos`,
+    method: "POST",
+    headers: {
+      access_token: localStorage.access_token,
+    },
+    data: {
+      title: $("#title").val(),
+      description: $("#description").val(),
+      due_date: $("#due_date").val(),
+      status: $("#status").val(),
+    },
+  };
+
+  // if any id provided make option as PUT method
+  if (event.target[0].value !== "") {
+    textMessage = "Success edit todo";
+    option = {
+      ...option,
+      url: `${BASE_URL}/todos/${$("#id").val()}`,
+      method: "PUT",
+    };
+  }
+
+  $.ajax(option)
+    .done(() => {
+      swal({
+        text: textMessage,
+        icon: "success",
+        timer: 1200,
+        buttons: false,
+      });
+    })
+    .fail((err) => {
+      swal({
+        text: err.responseJSON.message,
+        icon: "error",
+        timer: 1200,
+        buttons: false,
+      });
+    })
+    .always(() => {
+      $("#manipulate-todo")[0].reset();
+      hideModal();
+      home();
+    });
+}
+
+// Read
 function showTodo() {
+  $("#add-todos").show();
+  $("#todos").show();
   $.ajax({
-    url: `http://localhost:8080/todos`,
+    url: `${BASE_URL}/todos`,
     method: "GET",
     headers: {
       access_token: localStorage.access_token,
     },
   })
     .done((res) => {
-      const content = $("#content");
-      if (res.length === 0) {
-        content.append(
-          `<h2 class="text-center text-2xl font-bold">Nothing to do</h2>`
-        );
-        return;
-      }
-      content.append(
-        `<h2 class="text-center text-2xl font-bold">Any to do</h2>`
-      );
+      $("#pending-todo").empty();
+      $("#completed-todo").empty();
+      let pendingCounter = 0,
+        pendingContainer = [];
+      completedCounter = 0;
+
+      res.forEach((todo) => {
+        if (todo.status) {
+          completedCounter++;
+          $("#completed-todo").append(getTodoTemplate(todo));
+          return;
+        }
+
+        pendingCounter++;
+        pendingContainer.push(todo);
+      });
+
+      pendingContainer.sort((a, b) => {
+        return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+      });
+      pendingContainer.forEach((todo) => {
+        $("#pending-todo").append(getTodoTemplate(todo));
+      });
+
+      $("#pending-counter").text(pendingCounter);
+      $("#completed-counter").text(completedCounter);
     })
     .fail((err) => {
-      alert("failed", err.responseJSON.message);
+      swal({
+        text: err.responseJSON.message,
+        icon: "error",
+        timer: 1200,
+        buttons: false,
+      });
+    })
+    .always(() => {
+      feather.replace();
+    });
+}
+
+function getTodoTemplate(todo) {
+  const { id, title, description, status, due_date } = todo;
+  return `
+    <div class="relative">
+      <label
+        class="todo-container block bg-secondary rounded-md py-2 pl-12 pr-16 relative mb-1 cursor-pointer group
+          ${status ? "line-through text-secondary" : ""}"
+      >
+        ${title}
+        <span class="text-accent text-xs ${status ? "hidden" : ""}">
+          ${dayjs(due_date).fromNow()}
+        </span><br>
+        <span class="text-secondary text-xs ${status ? "hidden" : ""}">
+          ${description}
+        </span>
+        <input
+          type="checkbox"
+          ${status ? "checked" : ""}
+          class="absolute opacity-0 h-0 w-0"
+          onchange="updateStatus(${id}, ${status})"
+        />
+        <span
+          class="checkmark absolute top-2 left-3 h-6 w-6 border-2 border-accent rounded-md group-hover:bg-accent-dark group-hover:border-accent-dark"
+        ></span>
+        </label>
+      <i
+        data-feather="edit-3"
+        class="absolute top-2 right-8 h-4 w-4 text-yellow-500 hover:text-yellow-700 z-10 cursor-pointer"
+        onclick="showModal(event)"
+        data-id="${id}"
+        data-title="${title}"
+        data-description="${description}"
+        data-status="${status}"
+        data-due_date="${due_date}"
+      >
+      </i>
+      <i
+        data-feather="trash-2"
+        class="absolute top-2 right-2 h-4 w-4 text-red-500 hover:text-red-700 z-10 cursor-pointer"
+        onclick="deleteTodo(${id})"
+      >
+      </i>
+    </div>
+  `;
+}
+
+// Update
+function updateStatus(id, status) {
+  $.ajax({
+    url: `${BASE_URL}/todos/${id}`,
+    method: "PATCH",
+    headers: {
+      access_token: localStorage.access_token,
+    },
+    data: {
+      status: !status,
+    },
+  })
+    .done(() => {
+      home();
+    })
+    .fail((err) => {
+      swal({
+        text: err.responseJSON.message,
+        icon: "error",
+        timer: 1200,
+        buttons: false,
+      });
+    });
+}
+
+// Delete
+function deleteTodo(id) {
+  $.ajax({
+    url: `${BASE_URL}/todos/${id}`,
+    method: "DELETE",
+    headers: {
+      access_token: localStorage.access_token,
+    },
+  })
+    .done((res) => {
+      swal({
+        text: res.message,
+        icon: "success",
+        timer: 1200,
+        buttons: false,
+      });
+      home();
+    })
+    .fail((err) => {
+      swal({
+        text: err.responseJSON.message,
+        icon: "error",
+        timer: 1200,
+        buttons: false,
+      });
     });
 }
 
 // auth - regular
-function auth(type) {
+function auth(event, type) {
+  event.preventDefault();
   $.ajax({
-    url: `http://localhost:8080/${type}`,
+    url: `${BASE_URL}/${type}`,
     method: "POST",
     data: {
-      email: $(`#form-${type} div #email-${type}`).val(),
-      password: $(`#form-${type} div #password-${type}`).val(),
+      email: $(`#email-${type}`).val(),
+      password: $(`#password-${type}`).val(),
     },
   })
     .done((res) => {
-      $(`#form-${type}`)[0].reset();
       if (type === "register") {
-        home();
         alert("success", "Regsiter succesfully");
         return;
       }
 
       localStorage.setItem("access_token", res.accessToken);
-      home();
-      alert("success", "Login succesfully");
+      swal({
+        text: "Login Succesfully",
+        icon: "success",
+        timer: 1200,
+        buttons: false,
+      });
     })
     .fail((err) => {
+      swal({
+        text: err.responseJSON.message,
+        icon: "error",
+        timer: 1200,
+        buttons: false,
+      });
+    })
+    .always(() => {
+      home();
       $(`#form-${type}`)[0].reset();
-      alert("failed", err.responseJSON.message);
     });
 }
 
@@ -131,7 +342,7 @@ function onSignIn(googleUser) {
   }
 
   $.ajax({
-    url: `http://localhost:8080/oauth`,
+    url: `${BASE_URL}/oauth`,
     method: "POST",
     data: {
       token: googleUser.getAuthResponse().id_token,
@@ -139,35 +350,27 @@ function onSignIn(googleUser) {
   })
     .done((res) => {
       localStorage.setItem("access_token", res.accessToken);
-      home();
+      swal({
+        text: "Login Succesfully",
+        icon: "success",
+        timer: 1200,
+        buttons: false,
+      });
     })
     .fail((err) => {
-      alert("failed", err.responseJSON.message);
+      swal({
+        text: err.responseJSON.message,
+        icon: "error",
+        timer: 1200,
+        buttons: false,
+      });
+    })
+    .always(() => {
+      home();
     });
 }
 
 // helpers
 function clearContent() {
   $("#content").children().hide();
-  clearAlert();
-}
-
-function alert(type, message) {
-  const classType = {
-    success: "bg-blue-400",
-    failed: "bg-red-400",
-  };
-  const alert = $("#alert");
-  alert.addClass(`my-4 p-4 rounded-md shadow ${classType[type]}`);
-  alert.text(message);
-
-  setTimeout(() => {
-    clearAlert();
-  }, 2000);
-}
-
-function clearAlert() {
-  const alert = $("#alert");
-  alert.removeClass("my-4 p-4 rounded-md shadow bg-red-400 bg-blue-400");
-  alert.empty();
 }

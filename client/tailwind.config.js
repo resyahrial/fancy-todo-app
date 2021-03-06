@@ -11,8 +11,17 @@ module.exports = {
       backgroundColor: {
         primary: "#181820",
         secondary: "#21212B",
-        accent: "#F6739D",
+        accent: {
+          DEFAULT: "#F6739D",
+          dark: "#f04a7f",
+        },
         text: "#A5A5A9",
+      },
+      borderColor: {
+        accent: {
+          DEFAULT: "#F6739D",
+          dark: "#f04a7f",
+        },
       },
       fontFamily: {
         serif: "Poppins, sans-serif",

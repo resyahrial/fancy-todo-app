@@ -32,13 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       status: {
-        type: DataTypes.STRING,
-        validate: {
-          notEmpty: {
-            args: true,
-            msg: `Status can't be empty`,
-          },
-        },
+        type: DataTypes.BOOLEAN,
       },
       due_date: {
         type: DataTypes.DATE,
@@ -72,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Todo",
       hooks: {
         beforeCreate(todo) {
-          todo.status = "Progress";
+          todo.status = false;
         },
       },
     }
