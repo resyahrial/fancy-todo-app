@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="font-serif" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="google-signin-client_id"
+      content="204376097051-rd5ci6k66de7vib0shqoicdc8ergrcqu.apps.googleusercontent.com"
+    />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Fancy Todo</title>
+  <script type="module" crossorigin src="/assets/index.e7bc8dee.js"></script>
+  <link rel="stylesheet" href="/assets/index.b88a6e8e.css">
+</head>
+  <body class="bg-primary text-primary relative">
+    <!-- Modal add todos -->
+    <div
+      id="modal"
+      class="w-full absolute transform -translate-y-full duration-500 transition z-20"
+    >
+      <form
+        id="manipulate-todo"
+        class="space-y-4 w-3/6 mx-auto bg-gray-800 rounded-md p-6"
+        onsubmit="saveTodo(event)"
+      >
+        <div class="space-y-2">
+          <input type="hidden" id="id" name="id" />
+          <input type="hidden" id="status" name="status" value="false" />
+          <label for="title">Title :</label><br />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+            placeholder="type title"
+          /><br />
+        </div>
+        <div class="space-y-2">
+          <label for="description">Description :</label><br />
+          <textarea
+            type="text"
+            id="description"
+            name="description"
+            class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+            placeholder="type description"
+          ></textarea
+          ><br />
+        </div>
+        <div class="space-y-2">
+          <label for="due_date">Due date :</label><br />
+          <input
+            type="date"
+            id="due_date"
+            name="due_date"
+            class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+            placeholder="type due date"
+          /><br />
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-600 rounded-md py-2 px-3 h-min font-bold hover:bg-blue-800"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          class="ring-offset-blue-600 rounded-md py-2 px-3 h-min font-bold hover:bg-blue-600"
+          onclick="hideModal()"
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+
+    <!-- Navbar -->
+    <header class="bg-secondary text-secondary">
+      <nav class="flex justify-between items-center px-6 h-11">
+        <h1 class="text-xl text-primary font-bold">Fancy Todo</h1>
+        <ul class="flex justify-between space-x-4">
+          <li><a href="#" class="hover:text-accent">Login</a></li>
+          <li><a href="#" class="hover:text-accent">Register</a></li>
+          <li><a href="#" class="hover:text-accent logout">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- content -->
+    <div class="pt-8" id="content">
+      <!-- Login Form -->
+      <div
+        id="login-form"
+        class="max-w-md bg-secondary mx-auto py-8 px-4 rounded-md shadow-md"
+      >
+        <h2 class="text-center text-2xl font-bold mb-4">Login Form</h2>
+
+        <div
+          class="w-full divide-solid bg-gray-200 my-4"
+          style="height: 1px"
+        ></div>
+        <form
+          onsubmit="auth(event, 'login')"
+          class="space-y-4 w-full"
+          id="form-login"
+        >
+          <div class="space-y-2">
+            <label for="email-login">Email :</label><br />
+            <input
+              type="email"
+              id="email-login"
+              name="email"
+              class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+              placeholder="type email"
+            /><br />
+          </div>
+          <div class="space-y-2">
+            <label for="password-login">Password :</label><br />
+            <input
+              type="password"
+              id="password-login"
+              name="password"
+              class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+              placeholder="type password"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              type="submit"
+              class="bg-blue-600 rounded-md py-2 px-3 h-min font-bold hover:bg-blue-800"
+            >
+              Login
+            </button>
+            <div
+              class="g-signin2 bg-white flex justify-center rounded-md overflow-hidden"
+              data-width="200"
+              data-height="40"
+              data-onsuccess="onSignIn"
+            ></div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div
+        id="register-form"
+        class="max-w-md bg-secondary mx-auto py-8 px-4 rounded-md shadow-md"
+      >
+        <h2 class="text-center text-2xl font-bold">Register Form</h2>
+        <div class="w-full divide-solid bg-text my-4" style="height: 2px"></div>
+        <form
+          onsubmit="auth(event, 'register')"
+          class="space-y-4 w-full"
+          id="form-register"
+        >
+          <div class="space-y-2">
+            <label for="email-register">Email :</label><br />
+            <input
+              type="email"
+              id="email-register"
+              name="email"
+              class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+              placeholder="type email"
+            /><br />
+          </div>
+          <div class="space-y-2">
+            <label for="password-register">Password :</label><br />
+            <input
+              type="password"
+              id="password-register"
+              name="password"
+              class="rounded w-full text-gray-800 px-3 py-2 focus:ring-offset-indigo-300 focus:ring-4"
+              placeholder="type password"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              type="submit"
+              class="bg-blue-600 rounded-md py-2 px-3 h-min font-bold hover:bg-blue-800"
+            >
+              Register
+            </button>
+            <div
+              class="g-signin2 bg-white flex justify-center rounded-md overflow-hidden"
+              data-width="200"
+              data-height="40"
+              data-onsuccess="onSignIn"
+            ></div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Add Todo -->
+      <div
+        id="add-todos"
+        class="max-w-md mx-auto mb-4"
+        onclick="showModal(event)"
+      >
+        <div
+          class="group py-2 px-3 ring-offset-gray-200 border border-gray-800 rounded-lg flex items-center cursor-pointer"
+        >
+          <div
+            class="bg-accent rounded-lg shadow-md h-7 w-7 text-2xl font-bold flex justify-center items-center group-hover:bg-accent-dark"
+          >
+            +
+          </div>
+          <span class="ml-4 text-secondary">Add task</span>
+        </div>
+      </div>
+
+      <!-- Todos -->
+      <div id="todos" class="max-w-md mx-auto">
+        <input type="checkbox" class="absolute opacity-0 h-0 w-0" />
+        <div class="mb-4">
+          <h2 class="h6 text-primary mb-1">
+            Todo - <span id="pending-counter"></span>
+          </h2>
+          <div
+            id="pending-todo"
+            class="todo-list w-100 overflow-y-scroll"
+            style="max-height: 200px"
+          ></div>
+        </div>
+        <div>
+          <h2 class="h6 text-primary mb-1">
+            Completed - <span id="completed-counter"></span>
+          </h2>
+          <div
+            id="completed-todo"
+            class="todo-list w-100 overflow-y-scroll"
+            style="max-height: 200px"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/plugin/relativeTime.js"></script>
+    <script>
+      dayjs.extend(window.dayjs_plugin_relativeTime);
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="./scripts/index.js"></script>
+  </body>
+</html>
