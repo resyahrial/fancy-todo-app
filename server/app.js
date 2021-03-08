@@ -9,7 +9,7 @@ const router = require("./routers");
 const { errorHandler } = require("./middlewares");
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
