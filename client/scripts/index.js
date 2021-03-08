@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://resyahrial-fancy-todo.herokuapp.com";
 
 $(document).ready(() => {
   home();
@@ -70,7 +70,7 @@ function home() {
 
 function quoteData() {
   $.ajax({
-    url: "http://localhost:8080",
+    url: BASE_URL,
     method: "GET",
   })
     .done((res) => {
